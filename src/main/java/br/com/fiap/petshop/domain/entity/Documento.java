@@ -2,14 +2,25 @@ package br.com.fiap.petshop.domain.entity;
 
 import br.com.fiap.petshop.infra.security.entity.Pessoa;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
 public class Documento implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "NUMERO")
     private String numero;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "PESSOA",
+            referencedColumnName = "ID_PESSOA",
+            foreignKey = @ForeignKey(name = "TB_PESSOA")
+    )
     private Pessoa pessoa;
 
     protected Documento() {

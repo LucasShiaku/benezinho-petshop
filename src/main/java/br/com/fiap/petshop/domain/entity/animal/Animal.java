@@ -4,23 +4,48 @@ import br.com.fiap.petshop.domain.entity.Sexo;
 import br.com.fiap.petshop.domain.entity.servico.Servico;
 import br.com.fiap.petshop.infra.security.entity.Pessoa;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name = "TB_ANIMAL")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TP_ANIMAL")
 public abstract class Animal {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ANIMAL")
+
     private Long id;
+    @Column(name = "NOME")
     private String nome;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "SEXO", nullable = false)
     private Sexo sexo;
+
+    @Column(name = "NASCIMENTO", nullable = false)
     private LocalDate nascimento;
+
+    @Column(name = "RACA", nullable = false)
     private String raca;
+
+    @Column(name = "DESCRICAO", nullable = false)
     private String descricao;
+
+    @Column(name = "OBSERVACAO", nullable = false)
     private String observacao;
+
+    @ManyToOne
+    @JoinColumn(name = "dono_id",
+                referencedColumnName = "ID_ANIMAL")
     private Pessoa dono;
 
+    @ManyToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     private Set<Servico> servicos = new LinkedHashSet<>();
 
     public Animal() {

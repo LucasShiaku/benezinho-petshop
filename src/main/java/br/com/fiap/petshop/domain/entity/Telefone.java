@@ -2,14 +2,27 @@ package br.com.fiap.petshop.domain.entity;
 
 import br.com.fiap.petshop.infra.security.entity.Pessoa;
 
+import javax.persistence.*;
+
+@Entity
+
 public class Telefone {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TELEFONE")
+    @Column(name = "ID_TELEFONE")
 
     private Long id;
 
+    @Column(name = "DDD")
     private int ddd;
 
+    @Column(name = "NUMERO")
     private String numero;
 
+
+    @ManyToOne
+    @JoinColumn(name = "ID_PESSOA")
     private Pessoa pessoa;
 
     public Telefone() {

@@ -4,9 +4,11 @@ import br.com.fiap.petshop.domain.entity.Sexo;
 import br.com.fiap.petshop.domain.entity.servico.Servico;
 import br.com.fiap.petshop.infra.security.entity.Pessoa;
 
+import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.Set;
 
+@Entity
 public class Gato extends Animal{
     public Gato() {
     }
