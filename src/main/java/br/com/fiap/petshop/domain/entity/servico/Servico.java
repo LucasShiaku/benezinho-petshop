@@ -15,26 +15,26 @@ public abstract class Servico {
     @Column(name = "ID_SERVICO")
     private Long id;
 
-    @Column(name = "VALOR", nullable = false)
+    @Column(name = "VALOR")
     private BigDecimal valor;
 
-    @Column(name = "ABERTURA", nullable = false)
+    @Column(name = "ABERTURA")
     private LocalDateTime abertura;
 
-    @Column(name = "AUTORIZACAO", nullable = false)
+    @Column(name = "AUTORIZACAO")
     private LocalDateTime autorizacao;
 
-    @Column(name = "CONCLUSAO", nullable = false)
+    @Column(name = "CONCLUSAO")
     private LocalDateTime conclusao;
 
-    @Column(name = "DESCRICAO", nullable = false)
+    @Column(name = "DESCRICAO")
     private String descricao;
 
-    @Column(name = "OBSERVACAO", nullable = false)
+    @Column(name = "OBSERVACAO")
     private String observacao;
 
-    @ManyToOne
-    @JoinColumn(name = "ANIMAL_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "SERVICO_ID", referencedColumnName = "ID_SERVICO", foreignKey = @ForeignKey(name = "FK_SERVICO"))
     private Animal animal;
 
 

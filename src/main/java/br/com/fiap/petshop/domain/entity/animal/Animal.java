@@ -3,8 +3,8 @@ package br.com.fiap.petshop.domain.entity.animal;
 import br.com.fiap.petshop.domain.entity.Sexo;
 import br.com.fiap.petshop.domain.entity.servico.Servico;
 import br.com.fiap.petshop.infra.security.entity.Pessoa;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -19,7 +19,8 @@ public abstract class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ANIMAL")
-
+    @SequenceGenerator(name = "SQ_ANIMAL", sequenceName = "SQ_ANIMAL", allocationSize = 1)
+    @Column(name = "ID_ANIMAL")
     private Long id;
     @Column(name = "NOME")
     private String nome;
@@ -28,24 +29,24 @@ public abstract class Animal {
     @Column(name = "SEXO", nullable = false)
     private Sexo sexo;
 
-    @Column(name = "NASCIMENTO", nullable = false)
+    @Column(name = "NASCIMENTO")
     private LocalDate nascimento;
 
-    @Column(name = "RACA", nullable = false)
+    @Column(name = "RACA")
     private String raca;
 
-    @Column(name = "DESCRICAO", nullable = false)
+    @Column(name = "DESCRICAO")
     private String descricao;
 
-    @Column(name = "OBSERVACAO", nullable = false)
+    @Column(name = "OBSERVACAO")
     private String observacao;
 
-    @ManyToOne
-    @JoinColumn(name = "dono_id",
-                referencedColumnName = "ID_ANIMAL")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "dono_id", referencedColumnName = "ID_ANIMAL", foreignKey = @ForeignKey(name = "FK_ANIMAL_DONO"))
     private Pessoa dono;
 
     @ManyToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    @JoinTable(name = "TB_SERVICOS_ANIMAIS")
     private Set<Servico> servicos = new LinkedHashSet<>();
 
     public Animal() {
@@ -60,24 +61,24 @@ public abstract class Animal {
         this.descricao = descricao;
         this.observacao = observacao;
         this.dono = dono;
-        this.servicos = Objects.nonNull( servicos ) ? servicos : new LinkedHashSet<>();
+        this.servicos = Objects.nonNull(servicos) ? servicos : new LinkedHashSet<>();
     }
 
     public Animal adicionaServico(Servico s) {
-        this.servicos.add( s );
-        s.setAnimal( this );
+        this.servicos.add(s);
+        s.setAnimal(this);
         return this;
     }
 
     public Animal removeaServico(Servico s) {
-        this.servicos.remove( s );
-        if (s.getAnimal().equals( this )) s.setAnimal( null );
+        this.servicos.remove(s);
+        if (s.getAnimal().equals(this)) s.setAnimal(null);
         return this;
     }
 
 
     public Set<Servico> getServicos() {
-        return Collections.unmodifiableSet( servicos );
+        return Collections.unmodifiableSet(servicos);
     }
 
     public Long getId() {

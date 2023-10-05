@@ -34,7 +34,7 @@ public class DocumentoRepository implements Repository<Documento, Long> {
     public List<Documento> findAll() {
         return null;
     }
-
+    
     @Override
     public Documento findById(Long id) {
         return null;

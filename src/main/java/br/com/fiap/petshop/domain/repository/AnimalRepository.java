@@ -1,10 +1,7 @@
 package br.com.fiap.petshop.domain.repository;
 
-import br.com.fiap.petshop.Main;
 import br.com.fiap.petshop.domain.entity.animal.Animal;
-import br.com.fiap.petshop.infra.database.EntityManagerFactoryProvider;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;

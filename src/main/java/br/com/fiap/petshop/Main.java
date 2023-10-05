@@ -15,6 +15,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.process.internal.RequestScoped;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URI;
 
@@ -22,7 +23,7 @@ import java.net.URI;
 public class Main {
     public static final String BASE_URI = "http://localhost/api/";
 
-    public static final String PERSISTENCE_UNIT = "oracle";
+    public static final String PERSISTENCE_UNIT = "oracle-fiap";
 
     @PersistenceContext
     static EntityManager manager;
@@ -62,5 +63,12 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    private static void findAll(EntityManager manager) {
+        manager.createQuery("FROM Documento ").getResultList().forEach(System.out::println);
+    }
+
+    private static void findById(EntityManager manager) {
+        Long id = Long.valueOf(JOptionPane.showInputDialog("Informe o id do Usuário"));
     }
 }
